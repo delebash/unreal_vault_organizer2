@@ -7,9 +7,12 @@ import Fonts from 'unplugin-fonts/vite'
 import {fileURLToPath, URL} from 'node:url'
 
 const host = process.env.TAURI_DEV_HOST;
+// Replace '<YOUR_REPOSITORY_NAME>' with your actual GitHub repository name
+const repoName = 'unreal_vault_organizer2';
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
+    base:  "/unreal_vault_organizer2/", // Crucial for correct asset paths
     plugins: [
         Vue({
             template: {transformAssetUrls},
@@ -34,6 +37,13 @@ export default defineConfig(async () => ({
             },
         }),
     ],
+    css: {
+        preprocessorOptions: {
+            sass: {
+                silenceDeprecations: ['if-function'],
+            },
+        },
+    },
     optimizeDeps: {
         exclude: ['vuetify'],
     },
@@ -61,7 +71,7 @@ export default defineConfig(async () => ({
         port: 1420,
         strictPort: true,
         host: host || false,
-        open: true,
+        open: false,
         hmr: host
             ? {
                 protocol: "ws",
