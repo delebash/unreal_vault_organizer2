@@ -73,14 +73,15 @@
         >
           <template v-slot:default="{ items }">
             <v-container fluid>
-              <v-row>
+              <v-row dense>
                 <v-col
                     v-for="item in items"
                     :key="item.raw.name"
-                    cols="12"
-                    sm="6"
-                    md="4"
-                    lg="3"
+                    cols="6"
+                    sm="4"
+                    md="3"
+                    lg="2"
+                    x-lg="1"
                 >
 
                   <!--                  <v-card class="product-card-overlay">-->
@@ -148,18 +149,23 @@
                         class="top-left-overlay"
                         gradient="to top right, rgba(0,0,0,.6), rgba(0,0,0,.1)"
                     >
-<!--                      &lt;!&ndash; Content is placed inside the image container, aligned to the end (bottom) &ndash;&gt;-->
-<!--                      <v-card-title class="text-caption font-weight-bold text-white py-1">-->
-<!--                        {{ item.raw.name }}-->
-<!--                      </v-card-title>-->
-<!--                      <v-card-subtitle class="text-caption text-white pb-2">-->
-<!--                        {{ item.raw.location }}-->
-<!--                      </v-card-subtitle>-->
-<!-- Content is placed inside the image container -->
-<!-- Changed from v-card-title/subtitle back to divs for better text control inside the absolute positioned area -->
-                      <div class="pa-2 text-white">
-                        <div class="text-caption font-weight-bold">{{ item.raw.name }}</div>
-                        <div class="text-caption">{{ item.raw.location }}</div>
+                      <!--                      &lt;!&ndash; Content is placed inside the image container, aligned to the end (bottom) &ndash;&gt;-->
+                      <!--                      <v-card-title class="text-caption font-weight-bold text-white py-1">-->
+                      <!--                        {{ item.raw.name }}-->
+                      <!--                      </v-card-title>-->
+                      <!--                      <v-card-subtitle class="text-caption text-white pb-2">-->
+                      <!--                        {{ item.raw.location }}-->
+                      <!--                      </v-card-subtitle>-->
+                      <!-- Content is placed inside the image container -->
+                      <!-- Changed from v-card-title/subtitle back to divs for better text control inside the absolute positioned area -->
+                      <!--                      <div class="pa-2 text-white">-->
+                      <!--                        <div class="text-caption font-weight-bold">{{ item.raw.name }}</div>-->
+                      <!--                        <div class="text-caption">{{ item.raw.location }}</div>-->
+                      <!--                      </div>-->
+                      <!-- Text size reduced further using 'text-xs' custom class -->
+                      <div class="pa-1 text-white">
+                        <div class="text-xs font-weight-bold">{{ item.raw.name }}</div>
+                        <div class="text-xs">{{ item.raw.location }}</div>
                       </div>
                     </v-img>
 

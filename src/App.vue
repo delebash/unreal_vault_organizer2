@@ -16,8 +16,11 @@
       <v-btn icon="mdi-cart"></v-btn>
     </v-app-bar>
 
-    <!--    Side Nav-->
+    <!--Has to go above nav-bar or it won't stretch across whole app-->
+    <Footer></Footer>
+
     <NavBar></NavBar>
+
 
     <!-- Main Content Area -->
     <!-- v-main automatically adjusts padding for all fixed layout components -->
@@ -26,18 +29,13 @@
       <router-view></router-view>
     </v-main>
 
-    <!--    Global footer-->
-    <v-footer
-        color="grey"
-        height="44"
-        app
-    ></v-footer>
   </v-app>
 </template>
 
 <script setup>
 import {ref} from 'vue';
 import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 </script>
 
 <style scoped>
