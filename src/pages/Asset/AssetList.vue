@@ -84,63 +84,12 @@
                     x-lg="1"
                 >
 
-                  <!--                  <v-card class="product-card-overlay">-->
-                  <!--                    &lt;!&ndash; v-img component uses the imageUrl property &ndash;&gt;-->
-                  <!--                    <v-img-->
-                  <!--                        :src="item.raw.imageUrl"-->
-                  <!--                        :width="100"-->
-                  <!--                        aspect-ratio="1/1"-->
-                  <!--                        cover-->
-                  <!--                        class="align-end"-->
-                  <!--                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.7)"-->
-                  <!--                    ></v-img>-->
-
-                  <!--                    <v-card-title>{{ item.raw.name }}</v-card-title>-->
-                  <!--                    <v-card-subtitle>{{ item.raw.location }}</v-card-subtitle>-->
-                  <!--                    <v-card-text>-->
-                  <!--                      <v-chip-->
-                  <!--                          v-for="tag in item.raw.tags"-->
-                  <!--                          :key="tag"-->
-                  <!--                          small-->
-                  <!--                          class="ma-1"-->
-                  <!--                      >-->
-                  <!--                        {{ tag }}-->
-                  <!--                      </v-chip>-->
-                  <!--                    </v-card-text>-->
-                  <!--                  </v-card>-->
-                  <!-- We remove height="100%" here as content is now contained in v-img -->
-                  <!--                  <v-card class="product-card-overlay">-->
-
-                  <!--                    &lt;!&ndash; v-img now contains the text content via its default slot &ndash;&gt;-->
-                  <!--                    <v-img-->
-                  <!--                        :src="item.raw.imageUrl"-->
-                  <!--                        aspect-ratio="1"-->
-                  <!--                        cover-->
-                  <!--                        class="align-end"-->
-                  <!--                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.7)"-->
-                  <!--                    >-->
-                  <!--                      &lt;!&ndash; Content is placed inside the image container &ndash;&gt;-->
-                  <!--                      <div class="pa-2 text-white">-->
-                  <!--                        <div class="text-caption font-weight-bold">{{ item.raw.name }}</div>-->
-                  <!--                        <div class="text-caption">{{ item.raw.location }}</div>-->
-                  <!--                        <div class="mt-1">-->
-                  <!--                          <v-chip-->
-                  <!--                              v-for="tag in item.raw.tags"-->
-                  <!--                              :key="tag"-->
-                  <!--                              size="x-small"-->
-                  <!--                              class="ma-05"-->
-                  <!--                              color="rgba(255, 255, 255, 0.3)"-->
-                  <!--                              text-color="white"-->
-                  <!--                          >-->
-                  <!--                            {{ tag }}-->
-                  <!--                          </v-chip>-->
-                  <!--                        </div>-->
-                  <!--                      </div>-->
-                  <!--                    </v-img>-->
-                  <!--                  </v-card>-->
-
-                  <v-card height="100%" density="compact">
-
+                  <v-card
+                      height="100%"
+                      density="compact"
+                      @click="openProductDialog(item.raw)"
+                      class="cursor-pointer"
+                  >
                     <!-- Image component with overlaid Title/Subtitle -->
                     <v-img
                         :src="item.raw.imageUrl"
@@ -149,19 +98,8 @@
                         class="top-left-overlay"
                         gradient="to top right, rgba(0,0,0,.6), rgba(0,0,0,.1)"
                     >
-                      <!--                      &lt;!&ndash; Content is placed inside the image container, aligned to the end (bottom) &ndash;&gt;-->
-                      <!--                      <v-card-title class="text-caption font-weight-bold text-white py-1">-->
-                      <!--                        {{ item.raw.name }}-->
-                      <!--                      </v-card-title>-->
-                      <!--                      <v-card-subtitle class="text-caption text-white pb-2">-->
-                      <!--                        {{ item.raw.location }}-->
-                      <!--                      </v-card-subtitle>-->
                       <!-- Content is placed inside the image container -->
                       <!-- Changed from v-card-title/subtitle back to divs for better text control inside the absolute positioned area -->
-                      <!--                      <div class="pa-2 text-white">-->
-                      <!--                        <div class="text-caption font-weight-bold">{{ item.raw.name }}</div>-->
-                      <!--                        <div class="text-caption">{{ item.raw.location }}</div>-->
-                      <!--                      </div>-->
                       <!-- Text size reduced further using 'text-xs' custom class -->
                       <div class="pa-1 text-white">
                         <div class="text-xs font-weight-bold">{{ item.raw.name }}</div>
@@ -189,10 +127,18 @@
       </div>
     </v-card>
   </v-container>
+  <!-- Use the reusable component here -->
+  <ProductDetailDialog
+      v-model="dialogVisible"
+      :product="selectedProduct"
+      @close="handleClose"
+      @save="handleSave"
+  />
 </template>
 
 <script setup>
 import {ref, computed, watch} from 'vue';
+import ProductDetailDialog from '@/pages/Asset/AssetDetail.vue';
 
 // --- State Variables ---
 const search = ref('');
@@ -200,6 +146,7 @@ const selectedTags = ref([]);
 const currentPage = ref(1);
 const itemsPerPage = 8;
 const filterMode = ref('AND'); // Default mode is AND
+
 
 // Mock Data with Images
 const items = ref([
@@ -215,6 +162,54 @@ const items = ref([
 ]);
 const availableTags = ref(['tag1', 'tag2', 'tag3', 'tag4']);
 
+// --- Dialog State Variables ---
+const dialogVisible = ref(false);
+const selectedProduct = ref(null);
+
+
+// --- Snackbar State Variables (New) ---
+const snackbarVisible = ref(false);
+const snackbarMessage = ref('');
+
+// --- Functions (Methods) ---
+
+const openProductDialog = (product) => {
+  console.log('--> Product Dialog opened for:', product.name);
+  selectedProduct.value = product; // Load the data of the clicked product
+  console.log(selectedProduct.value)
+  dialogVisible.value = true;      // Open the dialog
+};
+
+const handleClose = () => {
+  console.log('--> Dialog is closing! Run close function here.');
+  console.log(dialogVisible.value)
+  dialogVisible.value = false
+};
+
+// Handle the save action received from the dialog
+const handleSave = (productToSave) => {
+  // In a real app, you would dispatch a store action or API call here
+  console.log("Saving product:", productToSave.name);
+
+  // Provide user feedback
+  snackbarMessage.value = `Saved "${productToSave.name}"!`;
+  snackbarVisible.value = true;
+
+  // Optionally close the dialog after saving
+  dialogVisible.value = false;
+};
+
+// ... (nextPage, prevPage functions and watchers) ...
+
+
+// Use a watcher to observe changes to the dialogVisible state
+// watch(dialogVisible, (newValue, oldValue) => {
+//   // The 'openDialog' function handles the 'open' side when the button is clicked.
+//   // The 'watch' handles the 'close' side when the value is toggled off from within the dialog structure.
+//   if (newValue === false && oldValue === true) {
+//     handleClose();
+//   }
+// });
 
 // --- Computed Properties ---
 
@@ -289,6 +284,9 @@ watch([search, selectedTags, filterMode], () => {
 /* Utility class for very small margin */
 .ma-05 {
   margin: 2px !important;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 /*

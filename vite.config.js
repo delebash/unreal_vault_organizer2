@@ -12,7 +12,7 @@ const repoName = 'unreal_vault_organizer2';
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-    base:  "/unreal_vault_organizer2/", // Crucial for correct asset paths
+    // base:  "/unreal_vault_organizer2/", // Crucial for correct asset paths for pushing to github pages
     plugins: [
         Vue({
             template: {transformAssetUrls},

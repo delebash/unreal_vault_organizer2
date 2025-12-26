@@ -10,8 +10,8 @@
   >
     <v-list nav dense>
       <v-list-item link to="/" title="Home" prepend-icon="mdi-home"></v-list-item>
-      <v-list-item link to="/products" title="Products" prepend-icon="mdi-store"></v-list-item>
-      <v-list-item link to="/about" title="About Us" prepend-icon="mdi-information"></v-list-item>
+<!--      <v-list-item link to="/products" title="Products" prepend-icon="mdi-store"></v-list-item>-->
+<!--      <v-list-item link to="/about" title="About Us" prepend-icon="mdi-information"></v-list-item>-->
     </v-list>
   </v-navigation-drawer>
 </template>
